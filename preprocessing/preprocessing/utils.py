@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import logging
+
 
 from tensorflow.keras.utils import Sequence
 from tensorflow.keras.utils import to_categorical
@@ -126,9 +128,9 @@ class BaseTextCategorizationDataset:
         from a list of labels, returns a list of indexes
         """
         label_to_index = self.get_label_to_index_map()
-        print(f'passed arguments :{labels}')
-        print(f'map :{label_to_index}')
-        print(f'label_to_index[labels[0]]:{ label_to_index["first_label"] }.')
+#        print(f'passed arguments :{labels}')
+#        print(f'map :{label_to_index}')
+#        print(f'label_to_index[labels[0]]:{ label_to_index["first_label"] }.')
         return [label_to_index[label] for label in labels]
 
 
@@ -170,6 +172,7 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
         self.preprocess_text = preprocess_text
 
         self._dataset = self.load_dataset(filename, min_samples_per_label)
+        logging.debug(f"num train batch {self._get_num_train_batches()}")
 
         assert self._get_num_train_batches() > 0
         assert self._get_num_test_batches() > 0

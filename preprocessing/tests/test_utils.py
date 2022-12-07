@@ -1,9 +1,10 @@
 import unittest
 import pandas as pd
 from unittest.mock import MagicMock
-
+import logging
 from preprocessing.preprocessing import utils
 
+logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
 class TestBaseTextCategorizationDataset(unittest.TestCase):
     def test__get_num_train_samples(self):
@@ -81,16 +82,16 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
 
     def test__get_num_samples_is_correct(self):
         # TODO : Write this test (code is in utils.py)
-        
-        base = utils.LocalTextCategorizationDataset()
         pd.read_csv = MagicMock(return_value=pd.DataFrame({
-            'post_id': ['id_1', 'id_2'],
-            'tag_name': ['tag_a', 'tag_b'],
-            'tag_id': [1, 2],
-            'tag_position': [0, 1],
-            'title': ['title_1', 'title_2']
+            'post_id': ['id_1', 'id_2', 'id_3', 'id_4', 'id_5', 'id_6'],
+            'tag_name': ['tag_a', 'tag_a','tag_b','tag_a','tag_a','tag_b'],
+            'tag_id': [1, 2,3,4,5,6],
+            'tag_position': [0, 0, 0, 0, 0, 0],
+            'title': ['title_1', 'title_2','title_3','title_4','title_5','title_6']
         }))
-        dataset = base.load_dataset("fake_path", 1)
+        base = utils.LocalTextCategorizationDataset("fake_path", 1, min_samples_per_label=0)
+        self.assertEqual(base._get_num_samples(),6)
+
 
     def test_get_train_batch_returns_expected_shape(self):
         # TODO: CODE HERE
