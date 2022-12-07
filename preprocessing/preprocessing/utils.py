@@ -110,7 +110,6 @@ class BaseTextCategorizationDataset:
         (dictionary index: label)
         """
         labels = self._get_label_list()
-        print(labels)
         indexes = [i for i in range(len(labels))]
         return dict(zip(indexes, labels))
 

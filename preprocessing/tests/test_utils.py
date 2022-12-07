@@ -94,14 +94,34 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
 
 
     def test_get_train_batch_returns_expected_shape(self):
-        # TODO: CODE HERE
-        assert 1!=1
-        pass
+        pd.read_csv = MagicMock(return_value=pd.DataFrame({
+            'post_id': ['id_1', 'id_2', 'id_3', 'id_4', 'id_5', 'id_6'],
+            'tag_name': ['tag_a', 'tag_a','tag_b','tag_a','tag_a','tag_b'],
+            'tag_id': [1, 2,3,4,5,6],
+            'tag_position': [0, 0, 0, 0, 0, 0],
+            'title': ['title_1', 'title_2','title_3','title_4','title_5','title_6']
+        }))
+        base = utils.LocalTextCategorizationDataset("fake_path", 1, min_samples_per_label=0)
+        logging.debug(f'return of get_test_batches   {base.get_test_batch()}')
+
+        self.assertEqual(len(base.get_train_batch()), 2)
+
     def test_get_test_batch_returns_expected_shape(self):
         # TODO: CODE HERE
-        assert 1!=1
+        pd.read_csv = MagicMock(return_value=pd.DataFrame({
+            'post_id': ['id_1', 'id_2', 'id_3', 'id_4', 'id_5', 'id_6'],
+            'tag_name': ['tag_a', 'tag_a', 'tag_b', 'tag_a', 'tag_a', 'tag_b'],
+            'tag_id': [1, 2, 3, 4, 5, 6],
+            'tag_position': [0, 0, 0, 0, 0, 0],
+            'title': ['title_1', 'title_2', 'title_3', 'title_4', 'title_5', 'title_6']
+        }))
+        base = utils.LocalTextCategorizationDataset("fake_path", 1, min_samples_per_label=0)
+        logging.debug(f'return of get_test_batches   {base.get_test_batch()}')
+
+        self.assertEqual(len(base.get_test_batch()), 2)
         pass
     def test_get_train_batch_raises_assertion_error(self):
         # TODO: CODE HERE
+        # Should not raise assertion error
         assert 1!=1
         pass
