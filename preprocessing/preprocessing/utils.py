@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import logging
 
+# LAST TIME QUIT TRYING TO RUN THIS CODE : FAILED BECUASE AttributeError: module 'tensorflow.compat.v2' has no attribute '__internal__'
+# Yassine told to put tf and keras at same version didnot work
+
 
 from tensorflow.keras.utils import Sequence
 from tensorflow.keras.utils import to_categorical
@@ -173,6 +176,9 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
         self._dataset = self.load_dataset(filename, min_samples_per_label)
         logging.debug(f"num train batch {self._get_num_train_batches()}")
 
+        print(self._get_num_train_samples())
+        print(self.train_ratio)
+        print(self._get_num_train_batches())
         assert self._get_num_train_batches() > 0
         assert self._get_num_test_batches() > 0
 
@@ -229,7 +235,7 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
         # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pipe.html
         # return pre-processed dataset
         dataset = (dataset.pipe(filter_tag_position(0))
-                            .pipe(filter_tags_with_less_than_x_samples(0)))
+                            .pipe(filter_tags_with_less_than_x_samples(min_samples_per_label)))
 
         return dataset
     # we need to implement the methods that are not implemented in the super class BaseTextCategorizationDataset
@@ -253,11 +259,12 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
         next_x = self.preprocess_text(next_x)
 
         # takes y_train between i * batch_size to (i + 1) * batch_size
-        next_y =  self.x_train.iloc[i*self.batch_size:(i+1)*self.batch_size]
-        next_y = self.preprocess_text(next_y)
+        next_y =  self.y_train[i*self.batch_size:(i+1)*self.batch_size]
 
         # When we reach the max num batches, we start anew
         self.train_batch_index = (self.train_batch_index + 1) % self._get_num_train_batches()
+
+        #print(f'batch : {next_x, next_y}')
         return next_x, next_y
 
     def get_test_batch(self):
@@ -271,8 +278,7 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
         next_x = self.preprocess_text(next_x)
 
         # takes y_test between i * batch_size to (i + 1) * batch_size
-        next_y = self.x_test.iloc[i*self.batch_size:(i+1)*self.batch_size]
-        next_y = self.preprocess_text(next_y)
+        next_y = self.y_test[i*self.batch_size:(i+1)*self.batch_size]
 
         # When we reach the max num batches, we start anew
         self.test_batch_index = (self.test_batch_index + 1) % self._get_num_test_batches()

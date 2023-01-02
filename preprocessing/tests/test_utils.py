@@ -119,7 +119,7 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
         logging.debug(f'return of get_test_batches   {base.get_test_batch()}')
 
         self.assertEqual(len(base.get_test_batch()), 2)
-        pass
+
     def test_get_train_batch_raises_assertion_error(self):
         # TODO: CODE HERE
         # Should not raise assertion error

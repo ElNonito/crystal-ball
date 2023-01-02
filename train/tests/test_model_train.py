@@ -33,18 +33,24 @@ def load_dataset_mock():
 class TestTrain(unittest.TestCase):
     # TODO: CODE HERE
     # use the function defined above as a mock for utils.LocalTextCategorizationDataset.load_dataset
-    utils.LocalTextCategorizationDataset.load_dataset =
+    utils.LocalTextCategorizationDataset.load_dataset = MagicMock(return_value=load_dataset_mock())
 
     def test_train(self):
         # TODO: CODE HERE
         # create a dictionary params for train conf
-        params =
+        params = {
+                "batch_size": 2,
+                "epochs": 1,
+                "dense_dim": 64,
+                "min_samples_per_label": 0,
+                "verbose": 1,
+            }
 
         # we create a temporary file to store artefacts
         with tempfile.TemporaryDirectory() as model_dir:
             # run a training
-            accuracy, _ =
+            accuracy, _ = run.train('not_a_path', params, model_dir, False)
 
         # TODO: CODE HERE
         # assert that accuracy is equal to 1.0
-
+        assert accuracy == 1.0
