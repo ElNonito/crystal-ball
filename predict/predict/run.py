@@ -29,15 +29,15 @@ class TextPredictionModel:
         """
         # TODO: CODE HERE
         # load model
-        model = keras.models.load_model('/home/arno/Documents/poc-to-prod/model/train_outputmodel.h5')
+        model = keras.models.load_model(artefacts_path+'train_outputmodel.h5')
 
         # TODO: CODE HERE
         # load params
-        with open('/home/arno/Documents/poc-to-prod/model/train_outputparams.json', 'r') as param_file:
+        with open(artefacts_path+'train_outputparams.json', 'r') as param_file:
             params = json.load(param_file)
         # TODO: CODE HERE
         # load labels_to_index
-        with open('/home/arno/Documents/poc-to-prod/model/train_outputlabels_index.json', 'r') as labels_to_index_file:
+        with open(artefacts_path+'train_outputlabels_index.json', 'r') as labels_to_index_file:
             labels_to_index = json.load(labels_to_index_file)
 
         return cls(model, params, labels_to_index)
@@ -68,8 +68,13 @@ class TextPredictionModel:
         logger.info("Prediction done in {:2f}s".format(time.time() - tic))
         return indexes
 
+def predict(text):
+    artefacts_path = "/home/arno/Documents/poc-to-prod/model/"
+    model = TextPredictionModel.from_artefacts(artefacts_path)
+    return model.predict([text])
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser()
     parser.add_argument("artefacts_path", help="path to trained model artefacts")
     parser.add_argument("text", type=str, default=None, help="text to predict")

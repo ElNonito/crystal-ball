@@ -7,4 +7,5 @@ app = Flask(__name__)
 @app.route('/', methods=["GET"])
 def hello_world():
     text = "text"
-    return text
+    prediction = run.predict('python')
+    return str(prediction)
