@@ -7,12 +7,17 @@ import keras
 from tensorflow.keras.models import load_model
 from numpy import argsort
 
-from preprocessing.preprocessing.embeddings import embed
+
+# Try this ? 
+import sys
+sys.path.insert(0, '/home/arno/Documents/poc-to-prod/capstone/preprocessing/preprocessing')
+from embeddings import embed
+
+#from capstone.preprocessing.preprocessing.embeddings import embed
 
 import logging
 
 logger = logging.getLogger(__name__)
-
 
 class TextPredictionModel:
     def __init__(self, model, params, labels_to_index):
@@ -73,22 +78,21 @@ def predict(text):
     model = TextPredictionModel.from_artefacts(artefacts_path)
     return model.predict([text])
 
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("artefacts_path", help="path to trained model artefacts")
-    parser.add_argument("text", type=str, default=None, help="text to predict")
-    args = parser.parse_args()
-
-    logging.basicConfig(format="%(name)s - %(levelname)s - %(message)s", level=logging.INFO)
-
-    model = TextPredictionModel.from_artefacts(args.artefacts_path)
-
-    if args.text is None:
-        while True:
-            txt = input("Type the text you would like to tag: ")
-            predictions = model.predict([txt])
-            print(predictions)
-    else:
-        print(f'Predictions for `{args.text}`')
-        print(model.predict([args.text]))
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("artefacts_path", help="path to trained model artefacts")
+#     parser.add_argument("text", type=str, default=None, help="text to predict")
+#     args = parser.parse_args()
+#
+#     logging.basicConfig(format="%(name)s - %(levelname)s - %(message)s", level=logging.INFO)
+#
+#     model = TextPredictionModel.from_artefacts(args.artefacts_path)
+#
+#     if args.text is None:
+#         while True:
+#             txt = input("Type the text you would like to tag: ")
+#             predictions = model.predict([txt])
+#             print(predictions)
+#     else:
+#         print(f'Predictions for `{args.text}`')
+#         print(model.predict([args.text]))
