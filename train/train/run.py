@@ -139,13 +139,13 @@ def make_model_with_parser():
     train(args.dataset_path, train_params, args.artefacts_path, args.add_timestamp)
 
 def make_model_by_hand():
-    train_conf_file = "/home/arno/Documents/poc-to-prod/poc-to-prod-capstone/train/conf/train-conf.yml"
+    train_conf_file = "//train/conf/train-conf.yml"
 
     with open(train_conf_file, 'r') as config_f:
         train_params = yaml.safe_load(config_f.read())
 
     train(
-        dataset_path="/home/arno/Documents/poc-to-prod/poc-to-prod-capstone/train/data/training-data/stackoverflow_posts.csv",
+        dataset_path="//train/data/training-data/stackoverflow_posts.csv",
         train_conf=train_params,
         model_path="/home/arno/Documents/poc-to-prod/model/train_output",
         add_timestamp=False)
